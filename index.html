@@ -18,26 +18,31 @@
                     },
                     colors: {
                         pastelPink: '#ffd1dc',
-                        roseGold: '#e8b4b8',
-                        warmCream: '#fcf6f5',
-                        mintAccent: '#a8e6cf',
+                        roseGold: '#f4acb7',
+                        warmCream: '#fff0f5',
+                        mintAccent: '#95d5b2',
                         softEmerald: '#2ecc71',
-                        darkText: '#2c3e50'
+                        darkText: '#2d3748'
                     },
                     animation: {
-                        'pulse-slow': 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slow': 'pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 4s ease-in-out infinite',
-                        'sway': 'sway 3s ease-in-out infinite alternate',
-                        'bounce-slow': 'bounce 2s infinite',
+                        'sway-slow': 'sway 4s ease-in-out infinite alternate',
+                        'sway-fast': 'sway 2.5s ease-in-out infinite alternate',
+                        'glow-pulse': 'glow 3s ease-in-out infinite alternate'
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '50%': { transform: 'translateY(-12px)' },
                         },
                         sway: {
-                            '0%': { transform: 'rotate(-3deg)' },
-                            '100%': { transform: 'rotate(3deg)' },
+                            '0%': { transform: 'rotate(-4deg)' },
+                            '100%': { transform: 'rotate(4deg)' },
+                        },
+                        glow: {
+                            '0%': { opacity: '0.4', transform: 'scale(1)' },
+                            '100%': { opacity: '0.8', transform: 'scale(1.15)' }
                         }
                     }
                 }
@@ -47,11 +52,26 @@
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #fff0f3 0%, #fef6f0 50%, #f0f7f4 100%);
+            background: #120914;
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
+
+        /* Ambient glowing gradient background */
+        .dreamy-bg {
+            background: radial-gradient(circle at 50% 20%, #ffe3e8 0%, #f7cad0 35%, #c8b6ff 70%, #b8c0ff 100%);
+        }
+
+        /* Glassmorphism card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 45px rgba(244, 172, 183, 0.35);
+        }
+
         /* Custom scrollbar for letter */
         .custom-scrollbar::-webkit-scrollbar {
             width: 5px;
@@ -61,21 +81,15 @@
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #e8b4b8;
+            background: #f4acb7;
             border-radius: 10px;
         }
-        /* Glassmorphism card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 40px rgba(232, 180, 184, 0.25);
-        }
+
         /* iPhone 16 Pro Frame Effect on Desktop */
         .iphone-frame {
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.15), 0 0 0 12px #1e1e1e, 0 0 0 14px #333333;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 10px #1c1c1e, 0 0 0 12px #2c2c2e;
         }
+
         /* Particle canvas styling */
         #particle-canvas {
             position: fixed;
@@ -86,190 +100,189 @@
             pointer-events: none;
             z-index: 50;
         }
-        /* Ambient floating stars/sparkles */
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.2; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-        .sparkle-1 { animation: sparkle 3s infinite ease-in-out; }
-        .sparkle-2 { animation: sparkle 4.5s infinite ease-in-out 1s; }
-        .sparkle-3 { animation: sparkle 3.8s infinite ease-in-out 0.5s; }
     </style>
 </head>
 <body class="flex items-center justify-center p-0 sm:p-4">
 
-    <!-- Particle / Heart Rain Canvas -->
+    <!-- Canvas for Heart Explosion & Rain -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Background Ambient Sparkles -->
+    <!-- Animated Glowing Orbs Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute top-10 left-8 text-pastelPink text-2xl sparkle-1">✨</div>
-        <div class="absolute top-24 right-12 text-roseGold text-xl sparkle-2">💖</div>
-        <div class="absolute bottom-32 left-12 text-mintAccent text-2xl sparkle-3">💚</div>
-        <div class="absolute bottom-16 right-16 text-pastelPink text-xl sparkle-1">✨</div>
-        <div class="absolute top-1/2 left-4 text-roseGold text-lg sparkle-2">🌸</div>
-        <div class="absolute top-1/3 right-6 text-mintAccent text-lg sparkle-3">✨</div>
+        <div class="absolute top-10 left-1/4 w-72 h-72 bg-pink-300/40 rounded-full blur-3xl animate-glow-pulse"></div>
+        <div class="absolute bottom-20 right-1/4 w-80 h-80 bg-emerald-200/40 rounded-full blur-3xl animate-glow-pulse" style="animation-delay: 1.5s;"></div>
+        <div class="absolute top-1/2 left-10 w-60 h-60 bg-purple-200/40 rounded-full blur-3xl animate-glow-pulse" style="animation-delay: 0.8s;"></div>
     </div>
 
-    <!-- iPhone 16 Pro Container -->
-    <div class="w-full sm:w-[410px] sm:h-[870px] h-screen sm:rounded-[50px] overflow-hidden relative flex flex-col iphone-frame bg-gradient-to-b from-rose-50 via-pink-50 to-emerald-50 z-10 transition-all duration-500">
+    <!-- iPhone 16 Pro Frame Container -->
+    <div class="w-full sm:w-[410px] sm:h-[870px] h-screen sm:rounded-[52px] overflow-hidden relative flex flex-col iphone-frame dreamy-bg z-10 transition-all duration-500">
         
-        <!-- iPhone Dynamic Island / Notch (Desktop/Mobile simulation) -->
+        <!-- iPhone Dynamic Island -->
         <div class="absolute top-3 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-full z-40 flex items-center justify-center shadow-md">
             <div class="w-3 h-3 bg-neutral-900 rounded-full mr-3 border border-neutral-800"></div>
             <div class="w-2.5 h-2.5 bg-neutral-900 rounded-full"></div>
         </div>
 
-        <!-- SCREEN 1: Initial Screen -->
-        <div id="screen-1" class="flex-1 flex flex-col justify-between pt-12 pb-8 px-6 transition-all duration-700 relative z-20">
+        <!-- ================= SCREEN 1 ================= -->
+        <div id="screen-1" class="flex-1 flex flex-col justify-between pt-14 pb-8 px-6 transition-all duration-700 relative z-20">
             
-            <!-- Top Greeting Header -->
-            <div class="text-center mt-6">
-                <div class="inline-block bg-white/80 backdrop-blur-md px-5 py-2 rounded-full shadow-sm border border-pink-100 mb-2">
-                    <span class="text-xs font-semibold tracking-wider text-rose-500 uppercase">დილის მყუდრო განწყობა</span>
-                </div>
-                <h1 class="font-serif text-2xl sm:text-3xl font-bold text-darkText leading-tight">
+            <!-- Main Title -->
+            <div class="text-center mt-4">
+                <h1 class="font-serif text-2xl sm:text-3xl font-bold text-neutral-800 leading-tight drop-shadow-sm">
                     დილამშვიდობისა ჩემო სიცოცხლევ <span class="inline-block animate-bounce">☀️</span>
                 </h1>
             </div>
 
-            <!-- Center Illustration: Two Cute Kissing Sheep & Pulsing Glowing Heart -->
-            <div class="relative flex flex-col items-center justify-center my-auto py-4">
+            <!-- Center Content: Pulsing Heart & Super Cute Kissing Sheep -->
+            <div class="relative flex flex-col items-center justify-center my-auto py-2">
                 
-                <!-- Glowing 3D Heart above their heads -->
-                <div id="heart-trigger" class="cursor-pointer group relative mb-6 transform transition-transform duration-300 hover:scale-110 active:scale-95">
-                    <!-- Outer glow aura -->
-                    <div class="absolute -inset-4 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full blur-xl opacity-60 group-hover:opacity-90 animate-pulse"></div>
-                    
-                    <!-- Heart container -->
-                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-emerald-400 via-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow border-2 border-white/60">
-                        <span class="text-5xl sm:text-6xl filter drop-shadow-lg select-none transform transition-transform group-hover:rotate-12">💚</span>
+                <!-- Pulsing 3D Heart above sheep -->
+                <div id="heart-trigger" class="cursor-pointer group relative mb-4 transform transition-transform duration-300 hover:scale-110 active:scale-95">
+                    <div class="absolute -inset-4 bg-emerald-400/50 rounded-full blur-xl animate-pulse"></div>
+                    <div class="relative w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-tr from-emerald-400 via-green-500 to-teal-400 rounded-full flex items-center justify-center shadow-2xl animate-pulse-slow border-2 border-white/80">
+                        <span class="text-5xl sm:text-6xl filter drop-shadow-md select-none">💚</span>
                     </div>
-                    
-                    <!-- Tap instruction badge -->
-                    <div class="absolute -bottom-7 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full shadow-md border border-emerald-200 whitespace-nowrap">
+                    <!-- Click Tip Badge -->
+                    <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md px-3.5 py-1 rounded-full shadow-md border border-emerald-200 whitespace-nowrap">
                         <span class="text-[11px] font-bold text-emerald-700 flex items-center gap-1 animate-bounce">
                             დააკლიკე გულს! 💌
                         </span>
                     </div>
                 </div>
 
-                <!-- SVG Cute Sheep Illustration (Girl on left, Boy on right, very close kissing) -->
-                <div class="relative w-full max-w-[300px] h-48 flex items-center justify-center animate-float">
-                    <svg viewBox="0 0 400 240" class="w-full h-full drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Soft background glow behind sheep -->
-                        <ellipse cx="200" cy="180" rx="140" ry="40" fill="rgba(255, 209, 220, 0.3)" filter="blur(8px)" />
+                <!-- Highly Detailed, Super Cute Kissing Sheep SVG -->
+                <div class="relative w-full max-w-[340px] h-56 flex items-center justify-center animate-float">
+                    <svg viewBox="0 0 420 260" class="w-full h-full filter drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Shadow on ground -->
+                        <ellipse cx="210" cy="225" rx="150" ry="18" fill="rgba(0,0,0,0.08)" />
 
-                        <!-- ================= GIRL SHEEP (LEFT) ================= -->
-                        <g id="girl-sheep" class="transform -translate-x-2">
-                            <!-- Body wool puffs -->
-                            <circle cx="110" cy="160" r="38" fill="#ffffff" stroke="#f3d5d8" stroke-width="3"/>
-                            <circle cx="90" cy="150" r="28" fill="#ffffff" stroke="#f3d5d8" stroke-width="3"/>
-                            <circle cx="130" cy="150" r="28" fill="#ffffff" stroke="#f3d5d8" stroke-width="3"/>
-                            <!-- Legs -->
-                            <rect x="95" y="185" width="8" height="30" rx="4" fill="#e8b4b8"/>
-                            <rect x="125" y="185" width="8" height="30" rx="4" fill="#e8b4b8"/>
+                        <!-- Floating Hearts between heads -->
+                        <g class="animate-pulse">
+                            <path d="M 205 85 C 205 78, 195 75, 195 83 C 195 90, 205 98, 205 98 C 205 98, 215 90, 215 83 C 215 75, 205 78, 205 85 Z" fill="#ff4d6d"/>
+                            <path d="M 218 68 C 218 63, 210 60, 210 66 C 210 72, 218 78, 218 78 C 218 78, 226 72, 226 66 C 226 60, 218 63, 218 68 Z" fill="#2ecc71" opacity="0.9"/>
+                        </g>
+
+                        <!-- ================= BOY SHEEP (LEFT) ================= -->
+                        <g id="boy-sheep-detailed" transform="translate(10, 0)">
+                            <!-- Back Wool Cloud -->
+                            <path d="M 100,165 C 80,165 70,145 75,130 C 60,120 65,95 85,90 C 95,75 125,75 135,90 C 150,85 170,100 165,120 C 175,135 165,160 145,165 Z" fill="#ffffff" stroke="#e0e1dd" stroke-width="3" stroke-linejoin="round"/>
                             
-                            <!-- Head -->
-                            <g class="transform hover:rotate-3 transition-transform origin-center">
-                                <!-- Wool afro on head -->
-                                <circle cx="135" cy="105" r="26" fill="#ffffff" stroke="#f3d5d8" stroke-width="3"/>
-                                <circle cx="120" cy="95" r="20" fill="#ffffff" stroke="#f3d5d8" stroke-width="3"/>
-                                <!-- Face skin -->
-                                <ellipse cx="140" cy="115" rx="18" ry="16" fill="#fde2e4"/>
-                                <!-- Ear -->
-                                <ellipse cx="122" cy="120" rx="6" ry="12" fill="#fcd5ce" transform="rotate(-25 122 120)"/>
-                                <!-- Cute Flower on ear -->
-                                <circle cx="118" cy="110" r="5" fill="#ff6b8b"/>
-                                <circle cx="118" cy="110" r="2" fill="#ffef9f"/>
-                                <!-- Eye (happy closed arc) -->
-                                <path d="M 142 110 Q 147 105 152 110" fill="none" stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round"/>
-                                <!-- Blush -->
-                                <ellipse cx="148" cy="118" rx="4" ry="2.5" fill="#ff85a1" opacity="0.6"/>
-                                <!-- Sweet Kissing Lips reaching right -->
-                                <path d="M 153 118 Q 160 116 163 118 Q 160 120 153 118" fill="#ff6b8b"/>
-                            </g>
-                        </g>
-
-                        <!-- ================= BOY SHEEP (RIGHT) ================= -->
-                        <g id="boy-sheep" class="transform translate-x-2">
-                            <!-- Body wool puffs -->
-                            <circle cx="290" cy="160" r="38" fill="#ffffff" stroke="#d8e2dc" stroke-width="3"/>
-                            <circle cx="270" cy="150" r="28" fill="#ffffff" stroke="#d8e2dc" stroke-width="3"/>
-                            <circle cx="310" cy="150" r="28" fill="#ffffff" stroke="#d8e2dc" stroke-width="3"/>
                             <!-- Legs -->
-                            <rect x="275" y="185" width="8" height="30" rx="4" fill="#a8dadc"/>
-                            <rect x="305" y="185" width="8" height="30" rx="4" fill="#a8dadc"/>
+                            <rect x="95" y="160" width="12" height="42" rx="6" fill="#f4acb7"/>
+                            <rect x="98" y="192" width="12" height="10" rx="3" fill="#e07a5f"/>
+                            <rect x="135" y="160" width="12" height="42" rx="6" fill="#f4acb7"/>
+                            <rect x="138" y="192" width="12" height="10" rx="3" fill="#e07a5f"/>
 
-                            <!-- Head -->
-                            <g>
-                                <!-- Wool afro on head -->
-                                <circle cx="265" cy="105" r="26" fill="#ffffff" stroke="#d8e2dc" stroke-width="3"/>
-                                <circle cx="280" cy="95" r="20" fill="#ffffff" stroke="#d8e2dc" stroke-width="3"/>
-                                <!-- Face skin -->
-                                <ellipse cx="260" cy="115" rx="18" ry="16" fill="#e8f4f8"/>
-                                <!-- Ear -->
-                                <ellipse cx="278" cy="120" rx="6" ry="12" fill="#bde0fe" transform="rotate(25 278 120)"/>
-                                <!-- Little bow tie -->
-                                <polygon points="260,135 250,140 250,130" fill="#457b9d"/>
-                                <polygon points="260,135 270,140 270,130" fill="#457b9d"/>
-                                <circle cx="260" cy="135" r="3" fill="#1d3557"/>
-                                <!-- Eye (happy closed arc) -->
-                                <path d="M 248 110 Q 253 105 258 110" fill="none" stroke="#2c3e50" stroke-width="2.5" stroke-linecap="round"/>
-                                <!-- Blush -->
-                                <ellipse cx="252" cy="118" rx="4" ry="2.5" fill="#a8dadc" opacity="0.6"/>
-                                <!-- Kissing Lips reaching left -->
-                                <path d="M 247 118 Q 240 116 237 118 Q 240 120 247 118" fill="#457b9d"/>
+                            <!-- Main Body Fluff -->
+                            <circle cx="95" cy="140" r="28" fill="#ffffff"/>
+                            <circle cx="120" cy="150" r="26" fill="#ffffff"/>
+                            <circle cx="145" cy="135" r="25" fill="#ffffff"/>
+                            <circle cx="120" cy="115" r="30" fill="#ffffff"/>
+
+                            <!-- Boy Head (leaning right) -->
+                            <g transform="translate(25, -5) rotate(8 150 120)">
+                                <!-- Ears -->
+                                <ellipse cx="125" cy="122" rx="18" ry="8" fill="#ffcad4" transform="rotate(-20 125 122)"/>
+                                <!-- Face -->
+                                <ellipse cx="155" cy="125" rx="24" ry="20" fill="#ffcad4"/>
+                                <!-- Hair Wool Tuft -->
+                                <circle cx="145" cy="105" r="12" fill="#ffffff" stroke="#e0e1dd" stroke-width="2"/>
+                                <circle cx="158" cy="102" r="11" fill="#ffffff" stroke="#e0e1dd" stroke-width="2"/>
+                                <!-- Eye (happy arc) -->
+                                <path d="M 152 120 Q 157 114 162 120" fill="none" stroke="#2b2d42" stroke-width="3" stroke-linecap="round"/>
+                                <!-- Cute Blush -->
+                                <ellipse cx="150" cy="128" rx="6" ry="3.5" fill="#ff4d6d" opacity="0.4"/>
+                                <!-- Gentle Kissing Lip Nose area -->
+                                <path d="M 175 126 C 182 124, 182 130, 175 128" fill="none" stroke="#e07a5f" stroke-width="3" stroke-linecap="round"/>
+                                <!-- Blue Bowtie -->
+                                <path d="M 138 142 L 130 147 L 130 137 Z" fill="#4ea8de"/>
+                                <path d="M 138 142 L 146 147 L 146 137 Z" fill="#4ea8de"/>
+                                <circle cx="138" cy="142" r="3" fill="#0077b6"/>
                             </g>
                         </g>
 
-                        <!-- Floating miniature hearts between them -->
-                        <path d="M 195 100 Q 200 90 205 100 Q 210 110 200 120 Q 190 110 195 100 Z" fill="#2ecc71" opacity="0.8" class="animate-pulse"/>
-                        <path d="M 180 115 Q 183 108 186 115 Q 189 122 183 128 Q 177 122 180 115 Z" fill="#ff6b8b" opacity="0.8" class="animate-bounce"/>
+                        <!-- ================= GIRL SHEEP (RIGHT) ================= -->
+                        <g id="girl-sheep-detailed" transform="translate(-10, 0)">
+                            <!-- Back Wool Cloud -->
+                            <path d="M 270,165 C 250,160 240,135 250,120 C 245,100 265,85 280,90 C 290,75 320,75 330,90 C 350,95 355,120 340,130 C 345,145 335,165 315,165 Z" fill="#ffffff" stroke="#f4acb7" stroke-width="3" stroke-linejoin="round"/>
+                            
+                            <!-- Legs -->
+                            <rect x="270" y="160" width="12" height="42" rx="6" fill="#ffcad4"/>
+                            <rect x="273" y="192" width="12" height="10" rx="3" fill="#ff4d6d"/>
+                            <rect x="310" y="160" width="12" height="42" rx="6" fill="#ffcad4"/>
+                            <rect x="313" y="192" width="12" height="10" rx="3" fill="#ff4d6d"/>
+
+                            <!-- Main Body Fluff -->
+                            <circle cx="275" cy="135" r="25" fill="#ffffff"/>
+                            <circle cx="300" cy="150" r="26" fill="#ffffff"/>
+                            <circle cx="325" cy="140" r="28" fill="#ffffff"/>
+                            <circle cx="300" cy="115" r="30" fill="#ffffff"/>
+
+                            <!-- Girl Head (leaning left to touch lips) -->
+                            <g transform="translate(-20, -5) rotate(-8 260 120)">
+                                <!-- Ears -->
+                                <ellipse cx="290" cy="122" rx="18" ry="8" fill="#ffcad4" transform="rotate(20 290 122)"/>
+                                <!-- Face -->
+                                <ellipse cx="260" cy="125" rx="24" ry="20" fill="#ffcad4"/>
+                                <!-- Hair Wool Tuft -->
+                                <circle cx="270" cy="105" r="12" fill="#ffffff" stroke="#f4acb7" stroke-width="2"/>
+                                <circle cx="257" cy="102" r="11" fill="#ffffff" stroke="#f4acb7" stroke-width="2"/>
+                                <!-- Eye (happy arc) -->
+                                <path d="M 253 120 Q 258 114 263 120" fill="none" stroke="#2b2d42" stroke-width="3" stroke-linecap="round"/>
+                                <!-- Eyelashes -->
+                                <path d="M 262 115 L 266 111" stroke="#2b2d42" stroke-width="2" stroke-linecap="round"/>
+                                <!-- Cute Deep Pink Blush -->
+                                <ellipse cx="265" cy="128" rx="6" ry="3.5" fill="#ff4d6d" opacity="0.6"/>
+                                <!-- Gentle Kissing Lip Nose area -->
+                                <path d="M 240 126 C 233 124, 233 130, 240 128" fill="none" stroke="#ff4d6d" stroke-width="3" stroke-linecap="round"/>
+                                
+                                <!-- Pretty Flower/Bow on Ear -->
+                                <circle cx="272" cy="96" r="6" fill="#ff4d6d"/>
+                                <circle cx="282" cy="96" r="6" fill="#ff4d6d"/>
+                                <circle cx="277" cy="96" r="4" fill="#ffea00"/>
+                            </g>
+                        </g>
                     </svg>
                 </div>
             </div>
 
-            <!-- Footer Action Button -->
-            <div class="text-center mt-4">
-                <button id="start-btn" class="w-full py-4 px-8 bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-emerald-200 transform active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 border border-white/40">
+            <!-- Main Call To Action Button -->
+            <div class="text-center mt-2">
+                <button id="start-btn" class="w-full py-4 px-8 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-emerald-300 transform active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 border border-white/50">
                     <span class="text-xl">💚</span>
                     <span class="text-lg tracking-wide">გახსენი გული & წერილი</span>
                     <span class="text-xl">💌</span>
                 </button>
-                <p class="text-[11px] text-neutral-500 mt-3 font-medium">შექმნილია მხოლოდ შენთვის, ჩემო პრინცესა ✨</p>
             </div>
         </div>
 
-        <!-- SCREEN 2: Letter & Flowers Screen (Initially Hidden) -->
-        <div id="screen-2" class="absolute inset-0 flex flex-col justify-between pt-12 pb-4 px-5 opacity-0 pointer-events-none transition-all duration-700 transform translate-y-8 z-30 bg-gradient-to-b from-rose-50/95 via-warmCream/95 to-emerald-50/95 backdrop-blur-xl">
+        <!-- ================= SCREEN 2 ================= -->
+        <div id="screen-2" class="absolute inset-0 flex flex-col justify-between pt-14 pb-4 px-5 opacity-0 pointer-events-none transition-all duration-700 transform translate-y-8 z-30 dreamy-bg">
             
-            <!-- Top Bar with Back Button / Restart -->
-            <div class="flex items-center justify-between z-10 pt-2">
-                <button id="back-btn" class="bg-white/80 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm border border-pink-200 text-xs font-semibold text-neutral-700 flex items-center gap-1.5 hover:bg-white active:scale-95 transition-all">
-                    <span>←</span> უკან დაბრუნება
+            <!-- Top Bar with Back Button ONLY -->
+            <div class="flex items-center justify-between z-10 pt-1">
+                <button id="back-btn" class="bg-white/85 backdrop-blur-md px-4 py-2 rounded-full shadow-md border border-pink-200 text-xs font-bold text-neutral-800 flex items-center gap-2 hover:bg-white active:scale-95 transition-all">
+                    <span class="text-rose-500 font-bold">←</span> უკან დაბრუნება
                 </button>
-                <div class="bg-emerald-100/80 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-200">
-                    <span class="text-[11px] font-bold text-emerald-800">შენი და என்னுடைய სამყარო 🌿</span>
-                </div>
+                <div class="text-xl animate-pulse">💚</div>
             </div>
 
-            <!-- Center Letter Card (Glassmorphism with drop-down & scroll) -->
+            <!-- Letter Card (Glassmorphic Container with Exact Text) -->
             <div class="my-auto py-2 z-10">
-                <div class="glass-card rounded-3xl p-6 shadow-2xl border border-white/80 relative overflow-hidden max-h-[500px] flex flex-col">
+                <div class="glass-card rounded-3xl p-6 shadow-2xl relative overflow-hidden max-h-[480px] flex flex-col">
                     
-                    <!-- Decorative corner stamp -->
-                    <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shadow-inner border border-emerald-200 text-sm">
+                    <!-- Decorative Corner Seal -->
+                    <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-emerald-100/90 flex items-center justify-center text-emerald-600 border border-emerald-200 shadow-sm text-sm">
                         💚
                     </div>
 
-                    <h2 class="font-serif text-lg font-bold text-neutral-800 mb-3 flex items-center gap-2 pr-10">
+                    <h2 class="font-serif text-lg font-bold text-neutral-800 mb-3 flex items-center gap-2 pr-8">
                         <span>ჩემი სიყვარულის წერილი</span>
                     </h2>
 
-                    <!-- Scrollable letter content -->
-                    <div class="custom-scrollbar overflow-y-auto pr-2 space-y-3 text-neutral-700 text-sm sm:text-[15px] leading-relaxed font-serif text-justify">
-                        <p class="font-medium text-emerald-700 text-base">
+                    <!-- Exact User Letter Text -->
+                    <div class="custom-scrollbar overflow-y-auto pr-2 space-y-3 text-neutral-800 text-sm sm:text-[15px] leading-relaxed font-serif text-justify">
+                        <p class="font-bold text-emerald-700 text-base">
                             დილამშვიდობისაა, ჩემო ჩემო ბედნიერებააა💚
                         </p>
                         <p>
@@ -282,54 +295,63 @@
                             ჩემი პატარა პრინცესა ხარ💚 ჩემი გულის დედოფალი💚 მადლობა რომ ხარ ჩემს ცხოვრებაში💚 მადლობა რომ მე ამირჩიე და უმშვენიერეს ხდი ჩემს არსებობას💚
                         </p>
                         <p class="font-semibold text-emerald-800">
-                            მიყვარხარ ჩემო გულო ყველაზე და ყველაფერზე მეტად💚 ყველაფერს ვიზამ რომ უბედნიერესები ვიყოთ ერთად, გაკოცე ბევრიიიი💚 ჩემოვ ცხოვრების არსო 💚💚💚
+                            მიყვარხარ ჩემო გულო ყველაზე და ყველაფერზე მეტად💚. ყველაფერს ვიზამ რომ უბედნიერესები ვიყოთ ერთად, გაკოცე ბევრიიიი💚 ჩემოვ ცხოვრების არსო 💚💚💚
                         </p>
                     </div>
 
-                    <!-- Signature at bottom of letter -->
-                    <div class="mt-4 pt-3 border-t border-rose-100 flex items-center justify-between">
-                        <span class="text-xs font-semibold text-rose-500">შენი სამუდამოო 💌</span>
-                        <span class="text-lg">✨💚✨</span>
+                    <!-- Signature -->
+                    <div class="mt-4 pt-3 border-t border-rose-200/60 flex items-center justify-between">
+                        <span class="text-xs font-bold text-rose-500">მუდამ შენი 💌</span>
+                        <span class="text-base">✨💚✨</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Bottom Flower Garden & Restart Button -->
+            <!-- Rich Lush Animated Flower Garden -->
             <div class="z-10 flex flex-col items-center">
                 
-                <!-- Animated Flower Garden Illustration -->
-                <div class="w-full flex justify-around items-end h-16 px-4 mb-2">
-                    <!-- Flower 1 -->
-                    <div class="flex flex-col items-center animate-sway" style="animation-duration: 3.2s;">
-                        <div class="text-xl animate-pulse">🌷</div>
-                        <div class="w-0.5 h-8 bg-emerald-500 rounded-full"></div>
+                <div class="w-full flex justify-between items-end h-20 px-2 mb-2 relative overflow-hidden">
+                    <!-- Flower 1: Rose -->
+                    <div class="flex flex-col items-center animate-sway-slow">
+                        <span class="text-2xl filter drop-shadow">🌹</span>
+                        <div class="w-1 h-9 bg-emerald-600 rounded-full"></div>
                     </div>
-                    <!-- Flower 2 -->
-                    <div class="flex flex-col items-center animate-sway" style="animation-duration: 2.5s; animation-delay: 0.5s;">
-                        <div class="text-2xl">🌸</div>
-                        <div class="w-0.5 h-10 bg-emerald-500 rounded-full"></div>
+                    <!-- Flower 2: Tulip Pink -->
+                    <div class="flex flex-col items-center animate-sway-fast" style="animation-delay: 0.3s;">
+                        <span class="text-3xl filter drop-shadow">🌷</span>
+                        <div class="w-1 h-12 bg-emerald-500 rounded-full"></div>
                     </div>
-                    <!-- Flower 3 -->
-                    <div class="flex flex-col items-center animate-sway" style="animation-duration: 3.8s; animation-delay: 1s;">
-                        <div class="text-xl">🌻</div>
-                        <div class="w-0.5 h-7 bg-emerald-500 rounded-full"></div>
+                    <!-- Flower 3: Sunflower -->
+                    <div class="flex flex-col items-center animate-sway-slow" style="animation-delay: 0.7s;">
+                        <span class="text-2xl filter drop-shadow">🌻</span>
+                        <div class="w-1 h-8 bg-emerald-600 rounded-full"></div>
                     </div>
-                    <!-- Flower 4 -->
-                    <div class="flex flex-col items-center animate-sway" style="animation-duration: 2.8s; animation-delay: 0.3s;">
-                        <div class="text-2xl">🌹</div>
-                        <div class="w-0.5 h-9 bg-emerald-500 rounded-full"></div>
+                    <!-- Flower 4: Blossom -->
+                    <div class="flex flex-col items-center animate-sway-fast" style="animation-delay: 0.2s;">
+                        <span class="text-3xl filter drop-shadow">🌸</span>
+                        <div class="w-1 h-11 bg-emerald-500 rounded-full"></div>
                     </div>
-                    <!-- Flower 5 -->
-                    <div class="flex flex-col items-center animate-sway" style="animation-duration: 3.5s; animation-delay: 0.8s;">
-                        <div class="text-xl">🌷</div>
-                        <div class="w-0.5 h-8 bg-emerald-500 rounded-full"></div>
+                    <!-- Flower 5: Hibiscus -->
+                    <div class="flex flex-col items-center animate-sway-slow" style="animation-delay: 0.9s;">
+                        <span class="text-2xl filter drop-shadow">🌺</span>
+                        <div class="w-1 h-10 bg-emerald-600 rounded-full"></div>
+                    </div>
+                    <!-- Flower 6: Tulip Yellow -->
+                    <div class="flex flex-col items-center animate-sway-fast" style="animation-delay: 0.5s;">
+                        <span class="text-2xl filter drop-shadow">🌷</span>
+                        <div class="w-1 h-8 bg-emerald-500 rounded-full"></div>
+                    </div>
+                    <!-- Flower 7: Rose -->
+                    <div class="flex flex-col items-center animate-sway-slow" style="animation-delay: 0.4s;">
+                        <span class="text-3xl filter drop-shadow">🌹</span>
+                        <div class="w-1 h-12 bg-emerald-600 rounded-full"></div>
                     </div>
                 </div>
 
-                <!-- Restart / Replay Button -->
-                <button id="restart-btn" class="w-full py-3.5 px-6 bg-white/90 backdrop-blur-md text-emerald-700 font-bold rounded-2xl shadow-lg hover:bg-emerald-50 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-emerald-200">
+                <!-- Replay Button -->
+                <button id="restart-btn" class="w-full py-3.5 px-6 bg-white/90 backdrop-blur-md text-emerald-800 font-bold rounded-2xl shadow-lg hover:bg-emerald-50 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-emerald-200">
                     <span>🔄</span>
-                    <span>თავიდან ნახვა 💌</span>
+                    <span>თავიდან ნახვა 💚</span>
                 </button>
             </div>
 
@@ -337,9 +359,8 @@
 
     </div>
 
-    <!-- JavaScript Logic & Sound / Particle Engine -->
+    <!-- JavaScript Engine -->
     <script>
-        // DOM Elements
         const screen1 = document.getElementById('screen-1');
         const screen2 = document.getElementById('screen-2');
         const heartTrigger = document.getElementById('heart-trigger');
@@ -349,7 +370,6 @@
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
 
-        // Resize Canvas
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -357,45 +377,45 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Web Audio API Magical Chime Sound Generator
-        function playMagicalChime() {
+        // Web Audio API Synth Sound
+        function playChimeSound() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContext) return;
                 const ctxAudio = new AudioContext();
 
-                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, index) => {
                     const osc = ctxAudio.createOscillator();
                     const gain = ctxAudio.createGain();
 
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, ctxAudio.currentTime + index * 0.1);
+                    osc.frequency.setValueAtTime(freq, ctxAudio.currentTime + index * 0.08);
 
-                    gain.gain.setValueAtTime(0, ctxAudio.currentTime + index * 0.1);
-                    gain.gain.linearRampToValueAtTime(0.15, ctxAudio.currentTime + index * 0.1 + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, ctxAudio.currentTime + index * 0.1 + 0.8);
+                    gain.gain.setValueAtTime(0, ctxAudio.currentTime + index * 0.08);
+                    gain.gain.linearRampToValueAtTime(0.18, ctxAudio.currentTime + index * 0.08 + 0.04);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctxAudio.currentTime + index * 0.08 + 0.7);
 
                     osc.connect(gain);
                     gain.connect(ctxAudio.destination);
 
-                    osc.start(ctxAudio.currentTime + index * 0.1);
-                    osc.stop(ctxAudio.currentTime + index * 0.1 + 0.9);
+                    osc.start(ctxAudio.currentTime + index * 0.08);
+                    osc.stop(ctxAudio.currentTime + index * 0.08 + 0.75);
                 });
             } catch (e) {
-                console.log('Audio Context not allowed yet or not supported', e);
+                console.log(e);
             }
         }
 
-        // Particle System for Heart Rain / Explosion
+        // Particle System
         let particles = [];
-        const emojis = ['💚', '✨', '💖', '🌸', '🌿', '💌'];
+        const emojis = ['💚', '✨', '💖', '🌸', '🌿', '🌷'];
 
         class Particle {
             constructor(x, y, isExplosion = true) {
                 this.x = x;
                 this.y = y;
-                this.size = Math.random() * 16 + 12;
+                this.size = Math.random() * 18 + 12;
                 this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
                 
                 if (isExplosion) {
@@ -438,12 +458,10 @@
         }
 
         function triggerHeartRain(originX, originY) {
-            // Initial burst
-            for (let i = 0; i < 45; i++) {
+            for (let i = 0; i < 50; i++) {
                 particles.push(new Particle(originX, originY, true));
             }
-            // Continuous gentle rain
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 35; i++) {
                 particles.push(new Particle(Math.random() * canvas.width, -20, false));
             }
         }
@@ -461,42 +479,38 @@
         }
         animateParticles();
 
-        // Transition Functions
-        function goToScreen2(e) {
+        function openLetterScreen() {
             const rect = heartTrigger.getBoundingClientRect();
             const x = rect.left + rect.width / 2;
             const y = rect.top + rect.height / 2;
 
-            playMagicalChime();
+            playChimeSound();
             triggerHeartRain(x, y);
 
-            // Screen transition
             screen1.classList.add('opacity-0', 'pointer-events-none', '-translate-y-8');
             setTimeout(() => {
                 screen2.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-8');
             }, 300);
         }
 
-        function goToScreen1() {
-            playMagicalChime();
+        function backToHomeScreen() {
+            playChimeSound();
             screen2.classList.add('opacity-0', 'pointer-events-none', 'translate-y-8');
             setTimeout(() => {
                 screen1.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-8');
             }, 300);
         }
 
-        // Event Listeners
-        heartTrigger.addEventListener('click', goToScreen2);
-        startBtn.addEventListener('click', goToScreen2);
-        backBtn.addEventListener('click', goToScreen1);
-        restartBtn.addEventListener('click', goToScreen1);
+        heartTrigger.addEventListener('click', openLetterScreen);
+        startBtn.addEventListener('click', openLetterScreen);
+        backBtn.addEventListener('click', backToHomeScreen);
+        restartBtn.addEventListener('click', backToHomeScreen);
 
-        // Continuous ambient gentle sparkles on idle
         setInterval(() => {
-            if (particles.length < 15 && screen2.classList.contains('opacity-0')) {
+            if (particles.length < 10 && screen2.classList.contains('opacity-0')) {
                 particles.push(new Particle(Math.random() * canvas.width, -10, false));
             }
-        }, 800);
+        }, 900);
     </script>
 </body>
 </html>
